@@ -31,7 +31,7 @@ import PocketBase from "pocketbase";
 </template>
 
 <script>
-var pocketbase_ip = "";
+var pocketbase_ip = ""; 
 if (import.meta.env.MODE === "production")
   pocketbase_ip = "http://193.168.146.79:80";
 else pocketbase_ip = "http://127.0.0.1:8090";
@@ -39,6 +39,12 @@ const pb = new PocketBase(pocketbase_ip);
 
 export default {
   methods: {
+
+    async logout() {
+      await pb.authStore.clear();
+      document.getElementById("status").innerHTML = "You are now logged out";
+    },
+    
     //this method allows a new user to sign up the system. Once done, the user receives an email
     //asking for account validation. Once the validation made the user is added to the system
     async login() {
