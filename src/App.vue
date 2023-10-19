@@ -101,6 +101,9 @@ pocketbase_ip = "https://sharedpoesy.enestavukcu.fr:443";
 //else pocketbase_ip = "http://127.0.0.1:8090";
 const pb = new PocketBase(pocketbase_ip);
 var currentUser;
+var listPoems;
+var nbpoems;
+var poemcourant;
 export default {
   methods: {
     //this method allows a new user to sign up the system. Once done, the user receives an email
@@ -168,24 +171,33 @@ export default {
     },
     async fetchPoems() {
       //call a request filtering all accessible poems
+      listPoems = await pb.collection('poems').getList(1, 50, { filter: 'email = "' + currentUser.email + '" || private = false' });
       //extract the number of readable poems
+      nbpoems=listPoems.items.length;
       //if the number of readable poems is not null
+      if(nbpoems>0){
       //then display the first one
-      //      document.getElementById('poemtitle').innerHTML=
-      //      document.getElementById('poemcontent').value=
-      //      document.getElementById('poemillustration').src=
+            document.getElementById('poemtitle').innerHTML=listPoems.items[0].title;
+            document.getElementById('poemcontent').value=listPoems.items[0].content;
+            document.getElementById('poemillustration').src=listPoems.items[0].illustration;
+
+      }
       //store the indexof the currently displayed poem
+      poemcourant=0;
     },
-    //this method allows the already registred user to log in the system.
-  },
-  nextPoem() {
+    nextPoem() {
     //if the current displayed poem is not the last
+    if(poemcourant<nbpoems-1){
     //then
     //skip to the next poem
+      poemcourant++;
     //and display the new current poem
-    //document.getElementById('poemtitle').innerHTML=
-    //document.getElementById('poemcontent').value=
-    //document.getElementById('poemillustration').src=
+      document.getElementById('poemtitle').innerHTML=listPoems.items[poemcourant].title;
+      document.getElementById('poemcontent').value=listPoems.items[poemcourant].content;
+      document.getElementById('poemillustration').src=listPoems.idems[poemcourant].illustration;
+    }
+  }
+    //this method allows the already registred user to log in the system.
   },
 };
 </script>
