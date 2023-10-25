@@ -208,7 +208,7 @@ export default {
 header .hidden {
   visibility: hidden;
   overflow: hidden;
-  display: flex;
+  
   display: inline-block;
   place-items: flex-start;
   flex-wrap: wrap;
